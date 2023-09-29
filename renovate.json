@@ -1,0 +1,103 @@
+{
+  "branchPrefix": "renovate-",
+  "commitMessagePrefix": ":arrow_up:",
+  "extends": [
+    "group:allNonMajor",
+    "config:base",
+    "docker:pinDigests",
+    "docker:enableMajor",
+    "regexManagers:dockerfileVersions",
+    ":maintainLockFilesMonthly",
+    ":label(renovate)",
+    ":separateMajorReleases",
+    ":preserveSemverRanges",
+    ":semanticCommitsDisabled"
+  ],
+  "schedule": [
+    "before 4pm on Monday"
+  ],
+  "onboardingBranch": "renovate-configure",
+  "npmrc": "registry=https://janusplatform.jfrog.io/janusplatform/api/npm/npm/\nalways-auth=true",
+  "python": {
+    "registryUrls": ["https://janusplatform.jfrog.io/janusplatform/api/pypi/pypi/simple"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["gomod"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
+    },
+    {
+      "matchDatasources": [
+        "clojure",
+        "maven"
+      ],
+      "registryUrls": [
+        "https://janusplatform.jfrog.io/janusplatform/libs-release",
+        "https://janusplatform.jfrog.io/janusplatform/libs-snapshot",
+        "https://janusplatform.jfrog.io/janusplatform/plugins-release",
+        "https://janusplatform.jfrog.io/janusplatform/plugins-snapshot"
+      ]
+    }
+  ],
+  "golang":{
+    "postUpdateOptions": [
+      "gomodTidy"
+    ]
+  },
+  "npm": {
+    "extends": [
+      ":unpublishSafe"
+    ],
+    "rangeStrategy": "bump"
+  },
+  "pip_requirements": {
+    "fileMatch": ["(^|/)([\\w-]*)requirements\\.(txt|pip)$", "(^|/)([\\w-]*)requirements-.+\\.(txt|pip)$"]
+  },
+  "circleci": {
+    "fileMatch": ["(^|/).circleci/config.yml$"]
+  },
+  "regex": {
+    "packageRules": [
+      {
+        "description": "Include docker image updates in the all-minor-patch PRs in an effort to reduce PR volume",
+        "matchDatasources": ["docker"],
+        "groupName": "all non-major dependencies",
+        "groupSlug": "all-minor-patch"
+      }
+    ]
+  },
+  "regexManagers": [
+    {
+      "fileMatch": [
+        "^.janus/deploy.yml$"
+      ],
+      "matchStrings": [
+        "image:\\s*(?<depName>.*?):(?<currentValue>.*?)@(?<currentDigest>sha256:[a-f0-9]+)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "description": "Custom package manager for spec and service files, which manages Janus images with JANUS_STACK_VERSION tags.",
+      "fileMatch": [
+        "^.janus/deploy.yml$",
+        "^.janus/service.yml$"
+      ],
+      "matchStrings": [
+        "image:\\s*(?<depName>docker-registry.janusplatform.io.*):(?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "regex:^(?<minor>[0-9]{8})_(?<patch>[0-9]{6})?$"
+    },
+    {
+      "description": "Custom package manager for Advanced Capture of environment variables explicitly set in .circleci/config.yml. Closely mirrors the built-in preset regexManagers:dockerfileVersions that we use for our Dockerfiles.",
+      "fileMatch": [
+        "^.circleci/config.yml$"
+      ],
+      "matchStrings": [
+        "environment:\\s+# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>[^\\s]+?)(?: (lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[a-z-0-9]+?))?\\s+.+?_VERSION: \"?(?<currentValue>.+?)\"?\\s"
+      ]
+    }
+  ]
+}
