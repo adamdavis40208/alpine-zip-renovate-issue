@@ -1,18 +1,18 @@
 FROM golang:1.21.0-alpine3.18@sha256:445f34008a77b0b98bf1821bf7ef5e37bb63cc42d22ee7c21cc17041070d134f
 
-# renovate: datasource=repology depName=alpine_3_16/git versioning=loose
+# renovate: datasource=repology depName=alpine_3_16/git versioning=deb
 ENV GIT_VERSION="2.40.1-r0"
-# renovate: datasource=repology depName=alpine_3_16/gcc versioning=loose
+# renovate: datasource=repology depName=alpine_3_16/gcc versioning=deb
 ENV GCC_VERSION="12.2.1_git20220924-r10"
-# renovate: datasource=repology depName=alpine_3_16/g++ versioning=loose
+# renovate: datasource=repology depName=alpine_3_16/g++ versioning=deb
 ENV GPP_VERSION="12.2.1_git20220924-r10"
-# renovate: datasource=repology depName=alpine_3_16/zip versioning=loose
-ENV ZIP_VERSION="3.0-r12"
-# renovate: datasource=repology depName=alpine_3_16/rsync versioning=loose
+# renovate: datasource=repology depName=alpine_3_16/zip versioning=deb
+ENV ZIP_VERSION="3.0-r11"
+# renovate: datasource=repology depName=alpine_3_16/rsync versioning=deb
 ENV RSYNC_VERSION="3.2.7-r4"
-# renovate: datasource=repology depName=alpine_3_16/ca-certificates versioning=loose
+# renovate: datasource=repology depName=alpine_3_16/ca-certificates versioning=deb
 ENV CA_CERTIFICATES="20230506-r0"
-# renovate: datasource=repology depName=alpine_3_16/curl versioning=loose
+# renovate: datasource=repology depName=alpine_3_16/curl versioning=deb
 ENV CURL_VERSION="8.3.0-r0"
 
 
