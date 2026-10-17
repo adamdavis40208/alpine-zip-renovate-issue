@@ -1,4 +1,4 @@
-FROM golang:1.21.0-alpine3.18@sha256:445f34008a77b0b98bf1821bf7ef5e37bb63cc42d22ee7c21cc17041070d134f
+FROM golang:1.22.3-alpine3.18@sha256:d1a601b64de09e2fa38c95e55838961811d5ca11062a8f4230a5c434b3ae2a34
 
 # renovate: datasource=repology depName=alpine_3_18/git versioning=deb
 ENV GIT_VERSION="2.40.1-r0"
